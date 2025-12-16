@@ -1,12 +1,9 @@
 import React from 'react';
 import { type Session } from "@supabase/supabase-js";
 import { LogOut, LayoutDashboard, ListPlus, Settings } from 'lucide-react';
-import { useAuth } from '../../lib/AuthContext'; // Access the context/hook
-// FIX: Using the absolute path from src to eliminate relative path confusion. 
-// If your build tool is capitalizing 'components', this might fix it.
-import { Button } from '../../Components/ui/button'; 
-// NOTE: If the above still fails, try fixing the directory name 'Components' to 'components' 
-// on your file system first, and then commit the rename using Git.
+import { useAuth } from '../../lib/AuthContext'; // Access the authentication context/hook
+import { Button } from '../ui/button'; // Assuming Button component is in src/components/ui/
+import DashboardPage from '../../pages/DashboardPage'; // <-- IMPORT THE DASHBOARD VIEW
 
 // The AppShell is the main layout for authenticated users.
 interface AppShellProps {
@@ -14,7 +11,7 @@ interface AppShellProps {
 }
 
 const AppShell: React.FC<AppShellProps> = ({ session }) => {
-    // FIX: Use the handleLogout from the context
+    // Access the global logout function from the context
     const { handleLogout } = useAuth();
     
     // Dev B Task: Implement App Shell, Nav, and Dashboard View
@@ -34,7 +31,12 @@ const AppShell: React.FC<AppShellProps> = ({ session }) => {
                     <h1 className="text-xl font-bold text-blue-600">QS Pocket Knife</h1>
                     <div className="flex items-center space-x-4">
                         
-                        {/* User Info (Dev B Task) */}
+                        {/* Placeholder for Sunlight Mode Toggle (Future Dev B Task) */}
+                        <Button variant="ghost" className="text-sm text-gray-600 dark:text-gray-300">
+                            ☀ Toggle Sunlight Mode
+                        </Button>
+                        
+                        {/* User Info */}
                         <span className="text-sm hidden sm:inline text-gray-600 dark:text-gray-400">
                             Welcome, {session.user.email?.split('@')[0]}
                         </span>
@@ -42,7 +44,7 @@ const AppShell: React.FC<AppShellProps> = ({ session }) => {
                         {/* Logout Button (Functional) */}
                         <Button 
                             onClick={handleLogout} 
-                            variant="destructive" // Example Tailwind class for red button
+                            variant="destructive"
                             className="bg-red-500 hover:bg-red-600 text-white flex items-center space-x-2"
                         >
                             <LogOut size={16} />
@@ -53,7 +55,7 @@ const AppShell: React.FC<AppShellProps> = ({ session }) => {
             </header>
 
             {/* 2. Main Layout (Sidebar + Content) */}
-            <div className="flex flex-grow">
+            <div className="flex grow">
                 
                 {/* Sidebar - Placeholder for Project List */}
                 <aside className="w-64 bg-white dark:bg-gray-800 border-r dark:border-gray-700 p-4 hidden md:block">
@@ -62,7 +64,12 @@ const AppShell: React.FC<AppShellProps> = ({ session }) => {
                             <a 
                                 key={item.label}
                                 href={item.href}
-                                className="flex items-center space-x-3 p-3 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                                // Highlight Dashboard as the current view
+                                className={`flex items-center space-x-3 p-3 rounded-lg text-sm font-medium transition ${
+                                    item.label === 'Dashboard' 
+                                        ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                                        : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                                }`}
                             >
                                 <item.icon size={18} />
                                 <span>{item.label}</span>
@@ -73,14 +80,9 @@ const AppShell: React.FC<AppShellProps> = ({ session }) => {
                 </aside>
 
                 {/* Main Content Area (Dashboard View) */}
-                <main className="flex-grow p-6 md:p-10 overflow-y-auto">
-                    <h2 className="text-3xl font-bold mb-6">Project Dashboard</h2>
-                    {/* Placeholder for Project List (Phase 1, Task 3) */}
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                        <p className="text-gray-600 dark:text-gray-400">
-                            Dev B Task: Implement the "Project List" component here.
-                        </p>
-                    </div>
+                <main className="grow p-6 md:p-10 overflow-y-auto">
+                    {/* FIX: RENDER THE DASHBOARD PAGE COMPONENT HERE */}
+                    <DashboardPage /> 
                 </main>
             </div>
 

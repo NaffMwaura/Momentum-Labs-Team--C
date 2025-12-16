@@ -1,38 +1,64 @@
-import "./App.css";
-import { AuthProvider, useAuth } from "./lib/AuthContext"; // Import the Provider and Hook
-import { AuthPage } from "./pages/AuthPage"; // The login form UI (AuthPageUI, renamed here)
-import AppShell from "./Components/layout/AppShell"; // The main authenticated application structure
+// src/App.tsx
 
-// --- Step 1: Component responsible for rendering the correct UI based on auth state ---
-const AuthGate = () => {
-    // Use the hook to determine the current session status
-    const { session, verifying, loading, authError, authSuccess } = useAuth();
+import "./App.css";
+import { AuthProvider, useAuth } from "./lib/AuthContext"; //Auth Context
+// The MarketingPage component is the public entry point 
+import MarketingPage from "./pages/MarketingPage"; 
+
+// The LoginPage  -- the sign-in action
+import LoginPage from "./pages/LoginPage"; 
+
+import AppShell from "./Components/layout/AppShell"; // Authenticated Application Layout
+
+// --- 1. The Protected Root Component ---
+const RootComponent = () => {
     
-    // Handle loading/verification states first
-    if (verifying || loading) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                 <p className="text-xl text-blue-500">Loading Application...</p>
-            </div>
-        );
+    const { session, isLoading } = useAuth(); // Renamed 'loading' to 'isLoading' to match AuthContext
+
+    // A: AuthContext handles initial loading and verification
+    if (isLoading) {
+
+        return null; 
     }
     
-    // If the session exists, the user is logged in: render the main application shell.
+    // B: User is Logged In -> Show the App Shell (Your main MVP UI)
     if (session) {
-        // AppShell will contain the Navbar, Sidebar, and the Dashboard content
+        // Pass the session down to AppShell, where all authenticated routes will live
         return <AppShell session={session} />; 
     }
+    
+    // C: User is Logged Out -> Show the Public/Marketing Page (which has the links to login)
+        
+    return <PublicRoutes />;
+}
 
-    // If the session does not exist, show the login form/status UI.
-    return <AuthPage />;
+// --- 1.1 New Component to Handle Public Routes ---
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+const PublicRoutes = () => {
+    return (
+        <Routes>
+            {/* The default entry point: The beautiful marketing page */}
+            <Route path="/" element={<MarketingPage />} />
+            
+            {/* The dedicated sign-in form */}
+            <Route path="/login" element={<LoginPage />} />
+            
+            {/* Fallback for any other public route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+    );
 };
 
-// --- Step 2: Main Application Wrapper ---
+
+// --- 2. The Final App Wrapper (using AuthProvider) ---
 function App() {
-    // We wrap the entire application in the AuthProvider so the session state is accessible everywhere
+    // The router must wrap the component that uses the routes.
     return (
         <AuthProvider>
-            <AuthGate />
+            <Router> {/* Router added here */}
+                <RootComponent />
+            </Router>
         </AuthProvider>
     );
 }
