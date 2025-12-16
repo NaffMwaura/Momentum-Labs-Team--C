@@ -85,7 +85,7 @@ export default function Auth() {
 			<div className={baseContainer}>
 				<h1 className="text-3xl font-bold mb-4">Authentication</h1>
 				<p className="text-gray-700 mb-2">
-					Confirming thy magic link...
+					Confirming your magic link...
 				</p>
 				<p className="text-blue-500 font-semibold">Loading...</p>
 			</div>
@@ -121,7 +121,7 @@ export default function Auth() {
 				<p className="text-green-600 font-semibold mb-2">
 					✓ Authentication successful!
 				</p>
-				<p className="text-gray-700">Loading thine account...</p>
+				<p className="text-gray-700">Loading your account...</p>
 			</div>
 		);
 	}
@@ -132,7 +132,7 @@ export default function Auth() {
 			<div className={baseContainer}>
 				<h1 className="text-3xl font-bold mb-4">Welcome!</h1>
 				<p className="text-gray-800 mb-4">
-					Thou art logged in as:{" "}
+					Your are logged in as:{" "}
 					<span className="font-mono">{session.user.email}</span>
 				</p>
 				<button
@@ -147,9 +147,9 @@ export default function Auth() {
 	// Login form
 	return (
 		<div className={baseContainer}>
-			<h1 className="text-3xl font-bold mb-4">Supabase + React</h1>
+			<h1 className="text-3xl text-gray-500 font-bold mb-4">Quantity Surveying App</h1>
 			<p className="text-gray-700 mb-6 text-center">
-				Sign in via magic link with thy email below
+				Sign in via magic link with your email below
 			</p>
 
 			<form
@@ -157,7 +157,7 @@ export default function Auth() {
 				className="w-full max-w-sm bg-white p-6 rounded shadow-md space-y-4">
 				<input
 					type="email"
-					placeholder="Thy email"
+					placeholder="Your email"
 					value={email}
 					required
 					onChange={(e) => setEmail(e.target.value)}
