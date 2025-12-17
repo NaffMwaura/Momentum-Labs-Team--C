@@ -1,16 +1,13 @@
-import { useState, useEffect, type FormEvent } from "react";
-import {
-	createClient,
-	type Session,
-	type AuthError,
-} from "@supabase/supabase-js";
-import toast from "react-hot-toast";
+import { createClient } from "@supabase/supabase-js";
 
+// Initialize the Supabase client instance
 const supabase = createClient(
-	import.meta.env.VITE_SUPABASE_URL as string,
-	import.meta.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY as string
+    import.meta.env.VITE_SUPABASE_URL as string,
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY as string
 );
 
+
+export default supabase;
 export default function Auth() {
 	const [loading, setLoading] = useState(false);
 	const [email, setEmail] = useState("");
