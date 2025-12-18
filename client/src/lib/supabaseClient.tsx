@@ -6,9 +6,7 @@ const supabase = createClient(
     import.meta.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY as string
 );
 
-<<<<<<< HEAD
-export default supabase;
-=======
+<<<<<<<<< Temporary merge branch 1
 export default function Auth() {
 	const [loading, setLoading] = useState(false);
 	const [email, setEmail] = useState("");
@@ -172,4 +170,6 @@ export default function Auth() {
 		</div>
 	);
 }
->>>>>>> e677fb212bb6c84d258f28a4db3874e74c73ce34
+=========
+export default supabase;
+>>>>>>>>> Temporary merge branch 2
